@@ -1,3 +1,4 @@
+import { useRouter } from "expo-router";
 import React, { memo } from "react";
 import { Dimensions, StyleSheet, Text, TouchableOpacity } from "react-native";
 
@@ -7,9 +8,22 @@ const CELL_SIZE = width / 7 - 8; // 7 days per week, minus margins
 
 const Day = memo(({ date, state, today }: any) => {
   const isToday = date.dateString === today;
+  const router = useRouter();
 
   return (
     <TouchableOpacity
+    onPress={() => {
+      console.log("Pressed date:", date.dateString);
+      router.push({
+      pathname: "/agenda",
+      params: { 
+        date: date.dateString,
+        day: date.day,
+        month: date.month,
+        year: date.year
+        }
+    });
+    }}
       style={[
         styles.container,
         {

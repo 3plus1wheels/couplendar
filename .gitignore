@@ -3,6 +3,10 @@
 # dependencies
 node_modules/
 
+# Django
+*.pyc
+__pycache__/
+
 # Expo
 .expo/
 dist/
