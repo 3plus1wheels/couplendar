@@ -1,10 +1,14 @@
+import DateTimePicker from '@react-native-community/datetimepicker';
 import { useState } from 'react';
-import { Modal, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { Modal, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 
 export default function AddEvent() {
   const [event, setEvent] = useState('');
   const [selectedType, setSelectedType] = useState('one-time');
   const [modalVisible, setModalVisible] = useState(false);
+  const [startTime, setStartTime] = useState(new Date());
+  const [endTime, setEndTime] = useState(new Date(Date.now() + 60 * 60 * 1000));
+  const [importance, setImportance] = useState('');
 
   const eventTypes = [
     { label: 'One-time Event', value: 'one-time' },
@@ -14,11 +18,33 @@ export default function AddEvent() {
     { label: 'Yearly', value: 'yearly' },
   ];
 
+
   const handleSelectType = (value: string, label: string) => {
     setSelectedType(value);
     setModalVisible(false);
   };
 
+  const handleSelectImportance = (value: string) => {
+    setImportance(value);
+    console.log('Selected importance:', value);
+  };
+
+  const styles = StyleSheet.create({
+  container: {
+    // ⭐️ Key Step 1: Set the direction to row
+    flexDirection: 'row', 
+    
+    // ⭐️ Key Step 2: Distribute the space between the buttons
+    justifyContent: 'space-between', 
+    
+    // Optional: Add some padding/margin for better visual appearance
+    paddingHorizontal: 10,
+    marginTop: 20, 
+  },
+});
+
+
+  
   const selectedLabel = eventTypes.find(type => type.value === selectedType)?.label;
 
   return (
@@ -58,6 +84,32 @@ export default function AddEvent() {
               <Text className="text-gray-500">▼</Text>
             </TouchableOpacity>
           </View>
+
+          {/* Start Time Picker */}
+          <View>
+            <Text className="text-sm font-medium text-gray-700 mb-1">Start Time</Text>
+            <DateTimePicker
+              value={startTime}
+              mode="datetime"
+              display="default"
+              onChange={(event, selectedDate) => {
+                if (selectedDate) setStartTime(selectedDate);
+              }}
+            />
+          </View>
+
+          {/* End Time Picker */}
+          <View>
+            <Text className="text-sm font-medium text-gray-700 mb-1">End Time</Text>
+            <DateTimePicker
+              value={endTime}
+              mode="datetime"
+              display="default"
+              onChange={(event, selectedDate) => {
+                if (selectedDate) setEndTime(selectedDate);
+              }}
+            />
+          </View>
         </View>
 
         {/* Modal for Event Type Selection */}
@@ -91,9 +143,23 @@ export default function AddEvent() {
           </TouchableOpacity>
         </Modal>
 
+        {/*/ Importance Level Input */}
+        <View style={styles.container}>
+          {/* 2. Three button components inside */}
+          <TouchableOpacity onPress={() => handleSelectImportance('low')} className="py-4 border-b border-gray-100">
+            <Text className="text-base text-gray-900">Low</Text>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={() => handleSelectImportance('medium')} className="py-4 border-b border-gray-100">
+            <Text className="text-base text-gray-900">Medium</Text>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={() => handleSelectImportance('high')} className="py-4 border-b border-gray-100">
+            <Text className="text-base text-gray-900">High</Text>
+          </TouchableOpacity>
+        </View>
+
         {/* Submit Button */}
         <TouchableOpacity 
-          onPress={() => console.log('Creating event:', event, 'Type:', selectedType)}
+          onPress={() => console.log('Creating event:', event, 'Type:', selectedType, 'start:', startTime, 'end:', endTime)}
           className="w-full bg-indigo-600 rounded-xl px-4 py-4 mt-6"
         >
           <Text className="text-white text-center font-semibold text-base">

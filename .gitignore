@@ -6,6 +6,8 @@ node_modules/
 # Django
 *.pyc
 __pycache__/
+*.sqlite3
+.env
 
 # Expo
 .expo/

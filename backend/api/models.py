@@ -20,7 +20,7 @@ class Event(models.Model):
     description = models.TextField(blank=True)
     start_time = models.DateTimeField()
     end_time = models.DateTimeField()
-    urgency = models.IntegerField(default=0)
+    importance = models.IntegerField(default=0)
     recurrence = models.IntegerField(default=0) #bit/decimal based representation of recurrence days
     owner = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='events')
 
